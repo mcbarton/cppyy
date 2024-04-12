@@ -125,7 +125,7 @@ class TestREGRESSION:
             assert cppyy.cppdef('int check_avx() { return (int) __AVX__; }')
             assert cppyy.gbl.check_avx()   # attribute error if compilation failed
 
-    @mark.xfail
+    @mark.skipif(not IS_CLANG_REPL, reason = "Fails on Cling")
     def test05_default_template_arguments(self):
         """Calling a templated method on a templated class with all defaults used to crash."""
 

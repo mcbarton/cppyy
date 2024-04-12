@@ -1588,7 +1588,7 @@ class TestSTLSTRING_VIEW:
         import cppyy
         cls.stltypes = cppyy.load_reflection_info(cls.test_dct)
 
-    @mark.xfail(condition=not IS_CLANG_REPL)
+    @mark.skipif(not IS_CLANG_REPL, reason="Fails on Cling")
     def test01_string_through_string_view(self):
         """Usage of std::string_view as formal argument"""
 

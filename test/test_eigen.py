@@ -1,6 +1,6 @@
 import py, os, sys
 from pytest import mark, raises
-from .support import setup_make
+from .support import setup_make, IS_CLANG_REPL
 
 inc_paths = [os.path.join(os.path.sep, 'usr', 'include'),
              os.path.join(os.path.sep, 'usr', 'local', 'include')]
@@ -158,7 +158,7 @@ class TestEIGEN_REGRESSIOn:
             warnings.simplefilter('ignore')
             cppyy.include('Eigen/Dense')
 
-    @mark.xfail
+    @mark.skipif(not IS_CLANG_REPL, reason="=Enabled with CppInterOp template-fix but has not been tested on Cling")
     def test01_use_of_Map(self):
         """Use of Map (used to crash)"""
 

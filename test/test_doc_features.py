@@ -1145,7 +1145,7 @@ class TestTALKEXAMPLES:
 
         assert v.back().add(17) == 4+42+2*17
 
-    @mark.xfail
+    @mark.skipif(not IS_CLANG_REPL, reason="=Enabled with CppInterOp template-fix but has not been tested on Cling")
     def test_fallbacks(self):
         """Template instantation switches based on value sizes"""
 

@@ -1,6 +1,6 @@
 import py, os, sys
 from pytest import mark, raises, skip
-from .support import setup_make
+from .support import setup_make, IS_CLANG_REPL
 
 noboost = False
 if not (os.path.exists(os.path.join(os.path.sep, 'usr', 'include', 'boost')) or \
@@ -15,7 +15,7 @@ class TestBOOSTANY:
 
         cppyy.include('boost/any.hpp')
 
-    @mark.xfail
+    @mark.skipif(not IS_CLANG_REPL, reason="Works on Clang-Repl but has not been tested on Cling")
     def test01_any_class(self):
         """Availability of boost::any"""
 
@@ -75,7 +75,6 @@ class TestBOOSTOPERATORS:
 
         cppyy.include('boost/operators.hpp')
 
-    @mark.xfail
     def test01_ordered(self):
         """ordered_field_operators as base used to crash"""
 
