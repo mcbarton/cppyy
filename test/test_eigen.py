@@ -158,7 +158,6 @@ class TestEIGEN_REGRESSIOn:
             warnings.simplefilter('ignore')
             cppyy.include('Eigen/Dense')
 
-    @mark.skipif(not IS_CLANG_REPL, reason="=Enabled with CppInterOp template-fix but has not been tested on Cling")
     def test01_use_of_Map(self):
         """Use of Map (used to crash)"""
 

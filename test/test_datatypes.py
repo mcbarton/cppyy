@@ -1649,7 +1649,7 @@ class TestDATATYPES:
         assert type(p.data_c[0]) == float
         assert p.intensity == 5.
 
-    @mark.skipif(not IS_CLANG_REPL, reason="Fails on Cling")
+    @mark.xfail(condition=not IS_CLANG_REPL, reason="Fails on Cling")
     def test32_anonymous_struct(self):
         """Anonymous struct creates an unnamed type"""
 
@@ -2167,7 +2167,6 @@ class TestDATATYPES:
         assert b.name == 'pqr'
         assert b.val  == 5
 
-    @mark.xfail
     def test44_buffer_memory_handling(self):
         """cppyy side handled memory of LL buffers"""
 

@@ -23,7 +23,6 @@ class TestTEMPLATES:
         v1 = cppyy.gbl.std.vector[int]
         assert v1.__cpp_template__[int] is v1
 
-    @mark.skipif(not IS_CLANG_REPL, reason="=Enabled with CppInterOp template-fix but has not been tested on Cling")
     def test01_template_member_functions(self):
         """Template member functions lookup and calls"""
 
@@ -239,7 +238,6 @@ class TestTEMPLATES:
 
         assert tc(5) == 5.
 
-    @mark.skipif(not IS_CLANG_REPL, reason="=Enabled with CppInterOp template-fix but has not been tested on Cling")
     def test10_templated_hidding_methods(self):
         """Test that base class methods are not considered when hidden"""
 
@@ -342,7 +340,7 @@ class TestTEMPLATES:
         assert type(d.get3()) == int
         assert d.get3() == 5
 
-    @mark.xfail
+    @mark.xfail(condition=IS_CLANG_REPL, reason="Fails on Clang-REPL")
     def test14_templated_return_type(self):
         """Use of a templated return type"""
 
@@ -526,7 +524,6 @@ class TestTEMPLATES:
 
         assert cppyy.gbl.TemplatedCtor.C(0)
 
-    @mark.xfail
     def test21_type_deduction_with_conversion(self):
         """Template instantiation with [] -> std::vector conversion"""
 
@@ -565,7 +562,7 @@ class TestTEMPLATES:
         assert l2v.test3[int]([d1])     == 1
         assert l2v.test3[int]([d1, d1]) == 2
 
-    @mark.xfail
+    @mark.xfail(condition=IS_CLANG_REPL, reason="Fails on Clang-REPL")
     def test22_type_deduction_of_proper_integer_size(self):
         """Template type from integer arg should be big enough"""
 
@@ -581,7 +578,6 @@ class TestTEMPLATES:
         for val in [2**64, -2**63-1]:
             raises(OverflowError, PassSomeInt, val)
 
-    @mark.skipif(not IS_CLANG_REPL, reason="=Enabled with CppInterOp template-fix but has not been tested on Cling")
     def test23_overloaded_setitem(self):
         """Template with overloaded non-templated and templated setitem"""
 

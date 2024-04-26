@@ -137,7 +137,7 @@ class TestLOWLEVEL:
         f = array('f', [0]);     ctd.set_float_r(f);  assert f[0] ==  5.
         f = array('d', [0]);     ctd.set_double_r(f); assert f[0] == -5.
 
-    @mark.skipif(not IS_CLANG_REPL, reason="Fails on Cling")
+    @mark.skipif(not IS_CLANG_REPL, reason="Crashes on Cling")
     def test06_ctypes_as_ref_and_ptr(self):
         """Use ctypes for pass-by-ref/ptr"""
 

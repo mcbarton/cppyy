@@ -184,9 +184,6 @@ class TestCROSSINHERITANCE:
         assert d.sum_all(-7, -5)             == 1
         assert Base1.call_sum_all(d, -7, -5) == 1
 
-    @mark.skipif(not IS_CLANG_REPL, reason="Crashes on cling when \
-                test06_const_methods, test07_templated_base and  \
-                test01_instance_data_read_access are run in order")
     def test06_const_methods(self):
         """Declared const methods should keep that qualifier"""
 
@@ -209,9 +206,6 @@ class TestCROSSINHERITANCE:
         assert CX.IBase4.call_get_value(c1) == 17
         assert CX.IBase4.call_get_value(c2) == 27
 
-    @mark.skipif(not IS_CLANG_REPL, reason="Crashes on cling when \
-                test06_const_methods, test07_templated_base and  \
-                test01_instance_data_read_access are run in order")
     def test07_templated_base(self):
         """Derive from a base class that is instantiated from a template"""
 
@@ -295,7 +289,7 @@ class TestCROSSINHERITANCE:
 
         assert raises(TypeError, Base1.call_get_value, d)
 
-    @mark.xfail
+    @mark.xfail(condition=IS_CLANG_REPL, reason="Fails on Clang-REPL")
     def test10_python_in_templates(self):
         """Usage of Python derived objects in std::vector"""
 

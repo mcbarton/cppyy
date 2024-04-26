@@ -991,7 +991,7 @@ class TestADVERTISED:
         assert n.p[2] == 0x3
         assert len(n.p) == 3
 
-    @mark.xfail(run=not IS_CLANG_DEBUG, reason="Crashes with ClangRepl with 'toString not implemented'")
+    @mark.xfail(condition=IS_CLANG_REPL, run=False, reason="Crashes with ClangRepl with 'toString not implemented'")
     def test09_custom_str(self):
         """Example of customized str"""
 
@@ -1145,7 +1145,6 @@ class TestTALKEXAMPLES:
 
         assert v.back().add(17) == 4+42+2*17
 
-    @mark.skipif(not IS_CLANG_REPL, reason="=Enabled with CppInterOp template-fix but has not been tested on Cling")
     def test_fallbacks(self):
         """Template instantation switches based on value sizes"""
 
@@ -1164,7 +1163,7 @@ class TestTALKEXAMPLES:
         assert CC.passT(2**64-1) == 2**64-1
         assert 'unsigned long long' in CC.passT.__doc__
 
-    @mark.xfail(run=not IS_CLANG_REPL, reason="Crashes otherwise")
+    @mark.xfail(condition=IS_CLANG_REPL, run=False, reason="Crashes on Clang-REPL")
     def test_callbacks(self):
         """Function callback example"""
 

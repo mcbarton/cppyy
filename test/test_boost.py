@@ -15,7 +15,6 @@ class TestBOOSTANY:
 
         cppyy.include('boost/any.hpp')
 
-    @mark.skipif(not IS_CLANG_REPL, reason="Works on Clang-Repl but has not been tested on Cling")
     def test01_any_class(self):
         """Availability of boost::any"""
 
@@ -144,7 +143,6 @@ class TestBOOSTERASURE:
         cppyy.include("boost/type_erasure/member.hpp")
         cppyy.include("boost/mpl/vector.hpp")
 
-    @mark.xfail
     def test01_erasure_usage(self):
         """boost::type_erasure usage"""
 

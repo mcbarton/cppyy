@@ -125,7 +125,6 @@ class TestREGRESSION:
             assert cppyy.cppdef('int check_avx() { return (int) __AVX__; }')
             assert cppyy.gbl.check_avx()   # attribute error if compilation failed
 
-    @mark.skipif(not IS_CLANG_REPL, reason = "Fails on Cling")
     def test05_default_template_arguments(self):
         """Calling a templated method on a templated class with all defaults used to crash."""
 
@@ -228,7 +227,7 @@ class TestREGRESSION:
         cppyy.cppdef(code)
         cppyy.gbl.some_foo_calling_python()
 
-    @mark.skipif(not IS_CLANG_REPL, reason="Crashes otherwise")
+    @mark.skipif(not IS_CLANG_REPL, reason="Crashes on Cling")
     def test10_enum_in_global_space(self):
         """Enum declared in search.h did not appear in global space"""
 
@@ -858,7 +857,6 @@ class TestREGRESSION:
         g.triggerChange()
         assert g.success
 
-    @mark.xfail
     def test30_uint64_t(self):
         """Failure due to typo"""
 
@@ -1003,7 +1001,7 @@ class TestREGRESSION:
         pt_type = cppyy.gbl.property_types.ReferenceWavefunction['double']
         assert cppyy.gbl.std.get[0](cppyy.gbl.property_types.run_as[pt_type]()) ==  20.
 
-    @mark.xfail(run=not IS_CLANG_DEBUG, reason="Crashes with ClangRepl with 'toString not implemented'")
+    @mark.xfail(condition=IS_CLANG_REPL, run=False, reason="Crashes with ClangRepl with 'toString not implemented'")
     def test34_print_empty_collection(self):
         """Print empty collection through Cling"""
 
@@ -1013,7 +1011,7 @@ class TestREGRESSION:
         v = cppyy.gbl.std.vector[int]()
         str(v)
 
-    @mark.skipif(not IS_CLANG_REPL, reason="Crashes otherwise")
+    @mark.skipif(not IS_CLANG_REPL, reason="Crashes on Cling")
     def test35_filesytem(self):
         """Static path object used to crash on destruction"""
 
@@ -1143,7 +1141,7 @@ class TestREGRESSION:
             assert ai.name[:5] == u'hello'
         cppyy.ll.array_delete(aa)
 
-    @mark.xfail(run=not IS_CLANG_DEBUG, reason="Crashes with Clang-Repl with assert in CodeGen::CodeGenFunction::EmitAggExpr")
+    @mark.xfail(run=False, reason="Crashes with Clang-Repl with assert in CodeGen::CodeGenFunction::EmitAggExpr")
     def test39_vector_of_pointers_conversion(self):
         """vector<T*>'s const T*& used to be T**, now T*"""
 

@@ -834,7 +834,7 @@ class TestSTLSTRING:
                 for k in range(2):
                     assert str_array_4[i][j][k] == vals[i*4+j*2+k]
 
-    @mark.xfail(run=not IS_CLANG_DEBUG, reason="Crashes with ClangRepl with 'toString not implemented'")
+    @mark.xfail(condition=IS_CLANG_REPL, run=False, reason="Crashes with ClangRepl with 'toString not implemented'")
     def test05_stlstring_and_unicode(self):
         """Mixing unicode and std::string"""
 
@@ -990,7 +990,7 @@ class TestSTLSTRING:
         assert s.rfind('c')  < 0
         assert s.rfind('c') == s.npos
 
-    @mark.xfail(run=not IS_CLANG_DEBUG, reason="Crashes with ClangRepl with 'toString not implemented'")
+    @mark.xfail(condition=IS_CLANG_REPL, run=False, reason="Crashes with ClangRepl with 'toString not implemented'")
     def test10_string_in_repr_and_str_bytes(self):
         """Special cases for __str__/__repr__"""
 
@@ -1588,7 +1588,7 @@ class TestSTLSTRING_VIEW:
         import cppyy
         cls.stltypes = cppyy.load_reflection_info(cls.test_dct)
 
-    @mark.skipif(not IS_CLANG_REPL, reason="Fails on Cling")
+    @mark.xfail(condition=not IS_CLANG_REPL, reason="xfail on Cling")
     def test01_string_through_string_view(self):
         """Usage of std::string_view as formal argument"""
 
