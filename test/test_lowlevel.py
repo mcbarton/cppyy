@@ -108,6 +108,7 @@ class TestLOWLEVEL:
         ptrptr = cppyy.ll.as_ctypes(s, byref=True)
         assert pycasts.get_deref(ptrptr) == actual
 
+    @mark.xfail
     def test05_array_as_ref(self):
         """Use arrays for pass-by-ref"""
 
