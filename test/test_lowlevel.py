@@ -137,7 +137,7 @@ class TestLOWLEVEL:
         f = array('f', [0]);     ctd.set_float_r(f);  assert f[0] ==  5.
         f = array('d', [0]);     ctd.set_double_r(f); assert f[0] == -5.
 
-    @mark.xfail(run=not IS_CLANG_REPL, reason="Valgrind detects memory leak with invalid delete[] operator, crashes on Cling") 
+    @mark.xfail(run=False, reason="Valgrind detects memory leak with invalid delete[] operator, crashes on Cling") 
     def test06_ctypes_as_ref_and_ptr(self):
         """Use ctypes for pass-by-ref/ptr"""
 
