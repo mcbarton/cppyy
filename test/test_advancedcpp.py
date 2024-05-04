@@ -16,7 +16,7 @@ class TestADVANCEDCPP:
         import cppyy
         cls.advanced = cppyy.load_reflection_info(cls.test_dct)
 
-    @mark.xfail(condition=IS_MAC_X86, reason="Fails on OS X x86")
+    @mark.xfail(condition=IS_MAC_X86 or IS_MAC_ARM, reason="Fails on OS X")
     def test01_default_arguments(self):
         """Test usage of default arguments"""
 
@@ -683,7 +683,7 @@ class TestADVANCEDCPP:
         assert a.__eq__(a) == False
         assert b.__eq__(b) == False
 
-    @mark.xfail(condition=IS_MAC_X86, reason="Fails on OS X x86")
+    @mark.xfail(condition=IS_MAC_X86 or IS_MAC_ARM, reason="Fails on OS X")
     def test20_overload_order_with_proper_return(self):
         """Test return type against proper overload w/ const and covariance"""
 

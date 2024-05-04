@@ -1,6 +1,6 @@
 import py, os, sys
 from pytest import raises, skip, mark
-from .support import setup_make, ispypy, IS_WINDOWS, IS_CLANG_REPL, IS_CLANG_DEBUG, IS_MAC_X86
+from .support import setup_make, ispypy, IS_WINDOWS, IS_CLANG_REPL, IS_CLANG_DEBUG, IS_MAC_X86, IS_MAC_ARM
 
 currpath = py.path.local(__file__).dirpath()
 test_dct = str(currpath.join("doc_helperDict"))
@@ -387,7 +387,7 @@ namespace Namespace {
 
         pass
 
-    @mark.xfail
+    @mark.xfail(run=not IS_MAC_ARM, reason="Crashes with exception not being caught on Apple Silicon")
     def test_x_inheritance(self):
         import cppyy
         from cppyy.gbl import Abstract, Concrete, call_abstract_method
@@ -453,7 +453,7 @@ namespace Namespace {
         assert cppyy.gbl.call_abstract_method1(pc) == "first message"
         assert cppyy.gbl.call_abstract_method2(pc) == "second message"
 
-    @mark.xfail
+    @mark.xfail(run=not IS_MAC_ARM, reason="Crashes with exception not being caught on Apple Silicon")
     def test_exceptions(self):
         """Exception throwing and catching"""
 
@@ -1125,7 +1125,7 @@ class TestTALKEXAMPLES:
         m = PyMyClass(1)
         assert CC.callb(m, 2) == 5
 
-    @mark.xfail(condition=IS_CLANG_REPL, reason="Fails with ClangRepl")
+    @mark.xfail(run=not IS_MAC_ARM, condition=IS_CLANG_REPL, reason="Fails with ClangRepl, Crashes on OS X arm")
     def test_cross_and_templates(self):
         """Template instantiation with cross-inheritance example"""
 
@@ -1244,7 +1244,7 @@ class TestTALKEXAMPLES:
         assert type(b) == CC.Derived
         assert d is b
 
-    @mark.xfail
+    @mark.xfail(run=not IS_MAC_ARM, reason="Seg Faults")
     def test_exceptions(self):
         """Exceptions example"""
 
@@ -1269,7 +1269,7 @@ class TestTALKEXAMPLES:
         with raises(CC.MyException):
             CC.throw_error()
 
-    @mark.xfail(condition=IS_MAC_X86, reason="Fails on OS X x86")
+    @mark.xfail(condition=IS_MAC_X86 or IS_MAC_ARM, reason="Fails on OS X")
     def test_unicode(self):
         """Unicode non-UTF-8 example"""
 

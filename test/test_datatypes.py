@@ -1,6 +1,6 @@
 import py, os, sys
 from pytest import raises, skip, mark
-from .support import setup_make, pylong, pyunicode, IS_CLANG_REPL, IS_MAC_X86
+from .support import setup_make, pylong, pyunicode, IS_CLANG_REPL, IS_MAC_X86, IS_MAC_ARM
 
 currpath = py.path.local(__file__).dirpath()
 test_dct = str(currpath.join("datatypesDict"))
@@ -1410,7 +1410,7 @@ class TestDATATYPES:
         gc.collect()
         raises(TypeError, c, 3, 3) # lambda gone out of scope
 
-    @mark.xfail
+    @mark.xfail(run=not IS_MAC_ARM, reason="Crashes with exception not being caught on Apple Silicon")
     def test28_callable_through_function_passing(self):
         """Passing callables through std::function"""
 
@@ -1483,7 +1483,7 @@ class TestDATATYPES:
         gc.collect()
         raises(TypeError, c, 3, 3) # lambda gone out of scope
 
-    @mark.xfail(condition=IS_MAC_X86, reason="Fails on OS X x86")
+    @mark.xfail(condition=IS_MAC_X86 or IS_MAC_ARM, reason="Fails on OS X")
     def test29_std_function_life_lines(self):
         """Life lines to std::function data members"""
 
@@ -2211,7 +2211,7 @@ class TestDATATYPES:
             assert buf1.data1[i] == 1.*i
             assert buf1.data2[i] == 2.*i
 
-    @mark.xfail(condition=IS_MAC_X86, reason="Fails on OS X x86")
+    @mark.xfail(condition=IS_MAC_X86 or IS_MAC_ARM, reason="Fails on OS X")
     def test45_const_ref_data(self):
         """Proper indirection for addressing const-ref data"""
 

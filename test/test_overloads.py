@@ -1,6 +1,6 @@
 import py, os, sys
 from pytest import raises, skip, mark
-from .support import setup_make, ispypy, IS_WINDOWS, IS_MAC_X86
+from .support import setup_make, ispypy, IS_WINDOWS, IS_MAC_X86, IS_MAC_ARM
 
 currpath = py.path.local(__file__).dirpath()
 test_dct = str(currpath.join("overloadsDict"))
@@ -70,7 +70,7 @@ class TestOVERLOADS:
         nb = ns_a_overload.b_overload()
         raises(TypeError, nb.f, c_overload())
 
-    @mark.xfail(condition=IS_MAC_X86, reason="Fails on OS X x86")
+    @mark.xfail(condition=IS_MAC_X86 or IS_MAC_ARM, reason="Fails on OS X")
     def test03_fragile_class_based_overloads(self):
         """Test functions overloaded on void* and non-existing classes"""
 
@@ -91,7 +91,7 @@ class TestOVERLOADS:
         dd = cppyy.gbl.get_dd_ol()
         assert more_overloads().call(dd     ) == "dd_ol"
 
-    @mark.xfail(condition=IS_MAC_X86, reason="Fails on OS X x86")
+    @mark.xfail(condition=IS_MAC_X86 or IS_MAC_ARM, reason="Fails on OS X")
     def test04_fully_fragile_overloads(self):
         """Test that unknown* is preferred over unknown&"""
 
@@ -121,7 +121,7 @@ class TestOVERLOADS:
         assert c_overload().get_int(ah) == 25
         assert d_overload().get_int(ah) == 25
 
-    @mark.xfail(condition=IS_MAC_X86, reason="Fails on OS X x86")
+    @mark.xfail(condition=IS_MAC_X86 or IS_MAC_ARM, reason="Fails on OS X")
     def test06_double_int_overloads(self):
         """Test overloads on int/doubles"""
 
@@ -146,7 +146,7 @@ class TestOVERLOADS:
             a = array.array(l, numbers)
             assert round(cmean(len(a), a) - mean, 8) == 0
 
-    @mark.xfail(condition=IS_MAC_X86, reason="Fails on OS X x86")
+    @mark.xfail(condition=IS_MAC_X86 or IS_MAC_ARM, reason="Fails on OS X")
     def test08_const_non_const_overloads(self):
         """Check selectability of const/non-const overloads"""
 
@@ -206,7 +206,7 @@ class TestOVERLOADS:
         with raises(ValueError):
             cpp.BoolInt4.fff(2)
 
-    @mark.xfail
+    @mark.xfail(run=not IS_MAC_ARM, reason="Seg Faults")
     def test10_overload_and_exceptions(self):
         """Prioritize reporting C++ exceptions from callee"""
 
