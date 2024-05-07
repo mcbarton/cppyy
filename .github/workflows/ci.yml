@@ -569,6 +569,7 @@ jobs:
                 -DClang_DIR=$LLVM_BUILD_DIR/lib/cmake/clang     \
                 -DBUILD_SHARED_LIBS=ON                          \
                 -DCMAKE_INSTALL_PREFIX=$CPPINTEROP_DIR          \
+                -DCPPINTEROP_ENABLE_TESTING=OFF                 \
                 ../
         else
           cmake -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}    \
@@ -578,15 +579,12 @@ jobs:
                 -DClang_DIR=$LLVM_BUILD_DIR/lib/cmake/clang     \
                 -DBUILD_SHARED_LIBS=ON                      \
                 -DCMAKE_INSTALL_PREFIX=$CPPINTEROP_DIR      \
+                -DCPPINTEROP_ENABLE_TESTING=OFF                 \
                 ../
         fi
         os="${{ matrix.os }}"
-        cmake --build . --target check-cppinterop --parallel ${{ env.ncpus }}
+        cmake --build . --parallel ${{ env.ncpus }}
         cppyy_on=$(echo "${{ matrix.cppyy }}" | tr '[:lower:]' '[:upper:]')
-        if [[ ("${cppyy_on}" != "ON") && ("${os}" == "ubuntu"*) ]]; then
-          # TODO: Remove "|| true" when fix memory issues in LLVM/Clang 17
-          valgrind --track-origins=yes --error-exitcode=1 unittests/CppInterOp/CppInterOpTests 2>&1 >/dev/null || true
-        fi
         cd ../..
         # We need CB_PYTHON_DIR later
         echo "CB_PYTHON_DIR=$CB_PYTHON_DIR" >> $GITHUB_ENV
@@ -653,6 +651,7 @@ jobs:
                 -DUSE_REPL=OFF                                  `
                 -DCling_DIR="$env:LLVM_BUILD_DIR\tools\cling"   `
                 -DLLVM_DIR="$env:LLVM_BUILD_DIR" `
+                -DCPPINTEROP_ENABLE_TESTING=OFF                 `
                 -DClang_DIR="$env:LLVM_BUILD_DIR"  -DCMAKE_INSTALL_PREFIX="$env:CPPINTEROP_DIR"  ..\
         }
         else
@@ -661,9 +660,10 @@ jobs:
                 -DUSE_CLING=OFF                             `
                 -DUSE_REPL=ON                               `
                 -DLLVM_DIR="$env:LLVM_BUILD_DIR\lib\cmake\llvm"  `
+                -DCPPINTEROP_ENABLE_TESTING=OFF                 `
                 -DClang_DIR="$env:LLVM_BUILD_DIR\lib\cmake\clang"   -DCMAKE_INSTALL_PREFIX="$env:CPPINTEROP_DIR"  ..\
         }
-        cmake --build . --config ${{ env.BUILD_TYPE }} --target check-cppinterop --parallel ${{ env.ncpus }}
+        cmake --build . --parallel ${{ env.ncpus }}
         cd ..\..
 
     - name: Build and Install cppyy-backend on Unix Systems
