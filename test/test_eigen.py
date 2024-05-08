@@ -1,6 +1,6 @@
 import py, os, sys
 from pytest import mark, raises
-from .support import setup_make, IS_CLANG_REPL
+from .support import setup_make, IS_CLANG_REPL, IS_MAC_X86
 
 inc_paths = [os.path.join(os.path.sep, 'usr', 'include'),
              os.path.join(os.path.sep, 'usr', 'local', 'include')]

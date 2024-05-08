@@ -352,6 +352,8 @@ jobs:
           brew link --overwrite "$pkg"
         done
         brew upgrade
+        brew install eigen
+        brew install boost
         pip install distro pytest
 
     - name: Restore Cache LLVM/Clang runtime build directory
