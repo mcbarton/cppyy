@@ -158,6 +158,7 @@ class TestEIGEN_REGRESSIOn:
             warnings.simplefilter('ignore')
             cppyy.include('Eigen/Dense')
 
+    @mark.xfail(condition=IS_MAC_X86 and (not IS_CLANG_REPL), reason="Errors out on OS X Cling")
     def test01_use_of_Map(self):
         """Use of Map (used to crash)"""
 
