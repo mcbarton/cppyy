@@ -291,7 +291,6 @@ class TestCROSSINHERITANCE:
 
         assert raises(TypeError, Base1.call_get_value, d)
 
-    @mark.xfail(condition=IS_CLANG_REPL, reason="Fails on Clang-REPL")
     def test10_python_in_templates(self):
         """Usage of Python derived objects in std::vector"""
 
@@ -1521,7 +1520,6 @@ class TestCROSSINHERITANCE:
         gc.collect()
         assert ns.Component.get_count() == 0
 
-    @mark.xfail(condition=IS_CLANG_REPL, reason="Fails with ClangRepl")
     def test32_by_value_arguments(self):
         """Override base function taking by-value arguments"""
 

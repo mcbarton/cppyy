@@ -185,7 +185,6 @@ class TestLEAKCHECK:
         self.check_func(m, 'method_default', b=-99)
         self.check_func(m, 'method_default', c=-99)
 
-    @mark.skipif(IS_CLANG_REPL, reason="Seg faults on Clang when entire test suite is run, passes if only test_leakcheck is run")
     def test05_aggregates(self):
         """Leak test of aggregate creation"""
 

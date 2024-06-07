@@ -436,7 +436,6 @@ namespace Namespace {
         pc = PyConcrete4()
         assert call_abstract_method(pc) == "Hello, Python World! (4)"
 
-    @mark.xfail(condition=IS_CLANG_REPL, reason="Fails with ClangRepl")
     def test_multi_x_inheritance(self):
         """Multiple cross-inheritance"""
 
@@ -1131,7 +1130,7 @@ class TestTALKEXAMPLES:
         m = PyMyClass(1)
         assert CC.callb(m, 2) == 5
 
-    @mark.xfail(run=not IS_MAC_ARM, condition=IS_CLANG_REPL, reason="Fails with ClangRepl, Crashes on OS X arm")
+    @mark.xfail(run=not IS_MAC_ARM, condition=IS_MAC_ARM, reason="Crashes on OS X arm")
     def test_cross_and_templates(self):
         """Template instantiation with cross-inheritance example"""
 
