@@ -274,10 +274,16 @@ jobs:
       run: |
         # Install deps
         sudo apt-get update
-        sudo apt-get install git g++ debhelper devscripts gnupg python3 valgrind
+        sudo apt-get install git g++ debhelper devscripts gnupg python3
+        sudo apt-get install -y libc6-dbg
+        sudo snap install valgrind --classic
         conda install -y -q -c conda-forge \
           distro \
           pytest
+        
+        # Install libraries used by the cppyy test suite
+        sudo apt install libeigen3-dev
+        sudo apt install libboost-all-dev
 
     - name: Install deps on MacOS
       if: runner.os == 'macOS'
