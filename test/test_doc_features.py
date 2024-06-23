@@ -436,6 +436,7 @@ namespace Namespace {
         pc = PyConcrete4()
         assert call_abstract_method(pc) == "Hello, Python World! (4)"
 
+    @mark.xfail(condition=((IS_MAC_X86 or IS_MAC_ARM) and IS_CLANG_REPL), reason="Fails on OSX with Clang-REPL")
     def test_multi_x_inheritance(self):
         """Multiple cross-inheritance"""
 
