@@ -1,5 +1,5 @@
 {
-LLVM 18 suppressions : setBits
+LLVM 19 suppressions : setBits
 Memcheck:Cond
 fun:_ZN4llvm5APInt7setBitsEjj
 fun:_ZL16computeKnownBitsPKN4llvm5ValueERKNS_5APIntERNS_9KnownBitsEjRKNS_13SimplifyQueryE
@@ -16,7 +16,7 @@ fun:_ZN4llvm16SelectionDAGISel20runOnMachineFunctionERNS_15MachineFunctionE
 }
 
 {
-LLVM 18 suppressions : setBits
+LLVM 19 suppressions : setBits
 Memcheck:Cond
 fun:_ZN4llvm5APInt7setBitsEjj
 fun:_ZL16computeKnownBitsPKN4llvm5ValueERKNS_5APIntERNS_9KnownBitsEjRKNS_13SimplifyQueryE
@@ -33,7 +33,7 @@ fun:_ZN4llvm16SelectionDAGISel20runOnMachineFunctionERNS_15MachineFunctionE
 }
 
 {
-LLVM 18 suppressions : setBits
+LLVM 19 suppressions : setBits
 Memcheck:Cond
 fun:_ZN4llvm5APInt7setBitsEjj
 fun:_ZL16computeKnownBitsPKN4llvm5ValueERKNS_5APIntERNS_9KnownBitsEjRKNS_13SimplifyQueryE
@@ -50,7 +50,7 @@ fun:_ZN4llvm16SelectionDAGISel20runOnMachineFunctionERNS_15MachineFunctionE
 }
 
 {
-LLVM 18 suppressions : CodeGen
+LLVM 19 suppressions : CodeGen
 Memcheck:Cond
 fun:_ZN5clang7CodeGen13CodeGenModule38SetLLVMFunctionAttributesForDefinitionEPKNS_4DeclEPN4llvm8FunctionE
 fun:_ZN5clang7CodeGen13CodeGenModule28EmitGlobalFunctionDefinitionENS_10GlobalDeclEPN4llvm11GlobalValueE
@@ -67,7 +67,7 @@ fun:_ZN3Cpp11Interpreter5ParseEN4llvm9StringRefE
 }
 
 {
-LLVM 18 suppressions : CodeGen
+LLVM 19 suppressions : CodeGen
 Memcheck:Cond
 fun:_ZN5clang7CodeGen13CodeGenModule38SetLLVMFunctionAttributesForDefinitionEPKNS_4DeclEPN4llvm8FunctionE
 fun:_ZN5clang7CodeGen14CodeGenVTables14maybeEmitThunkENS_10GlobalDeclERKNS_9ThunkInfoEb
@@ -84,7 +84,7 @@ fun:_ZN5clang11Interpreter5ParseEN4llvm9StringRefE
 }
 
 {
-LLVM 18 suppressions : CodeGen
+LLVM 19 suppressions : CodeGen
 Memcheck:Cond
 fun:_ZN5clang7CodeGen13CodeGenModule38SetLLVMFunctionAttributesForDefinitionEPKNS_4DeclEPN4llvm8FunctionE
 fun:_ZN5clang7CodeGen13CodeGenModule18codegenCXXStructorENS_10GlobalDeclE
@@ -101,7 +101,7 @@ fun:_ZN5clang17IncrementalParser23ParseOrWrapTopLevelDeclEv
 }
 
 {
-LLVM 18 suppressions : CodeGen
+LLVM 19 suppressions : CodeGen
 Memcheck:Cond
 fun:_ZN5clang7CodeGen13CodeGenModule38SetLLVMFunctionAttributesForDefinitionEPKNS_4DeclEPN4llvm8FunctionE
 fun:_ZN5clang7CodeGen13CodeGenModule18codegenCXXStructorENS_10GlobalDeclE
@@ -118,7 +118,7 @@ fun:_ZN5clang11Interpreter5ParseEN4llvm9StringRefE
 }
 
 {
-LLVM 18 suppressions : CodeGen
+LLVM 19 suppressions : CodeGen
 Memcheck:Cond
 fun:_ZN5clang7CodeGen13CodeGenModule38SetLLVMFunctionAttributesForDefinitionEPKNS_4DeclEPN4llvm8FunctionE
 fun:_ZN5clang7CodeGen13CodeGenModule28EmitGlobalFunctionDefinitionENS_10GlobalDeclEPN4llvm11GlobalValueE
