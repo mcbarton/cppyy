@@ -39,15 +39,15 @@ jobs:
             clang-runtime: '17'
             cling: Off
             cppyy: On
-          - name: ubu22-x86-gcc9-clang-repl-16-cppyy
+          - name: ubu22-x86-gcc12-clang-repl-16-cppyy
             os: ubuntu-22.04
-            compiler: gcc-9
+            compiler: gcc-12
             clang-runtime: '16'
             cling: Off
             cppyy: On
-          - name: ubu22-x86-gcc9-clang13-cling-cppyy
+          - name: ubu22-x86-gcc12-clang13-cling-cppyy
             os: ubuntu-22.04
-            compiler: gcc-9
+            compiler: gcc-12
             clang-runtime: '13'
             cling: On
             cling-version: '1.0'
@@ -227,13 +227,12 @@ jobs:
           if ! sudo apt install -y clang-${vers}; then
             curl https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
             echo "deb https://apt.llvm.org/${os_codename}/ llvm-toolchain-${os_codename}-${vers} main" | sudo tee -a /etc/apt/sources.list
-            sudo apt update
+            sudo apt-get update
             sudo apt install -y clang-${vers}
           fi
           echo "CC=clang-${vers}" >> $GITHUB_ENV
           echo "CXX=clang++-${vers}" >> $GITHUB_ENV
         fi
-     
       env:
         compiler: ${{ matrix.compiler }}
 
@@ -295,10 +294,8 @@ jobs:
         sudo apt-get install git g++ debhelper devscripts gnupg python3
         sudo apt-get install -y libc6-dbg
         sudo snap install valgrind --classic
-        conda install -y -q -c conda-forge \
-          distro \
-          pytest
-        
+        sudo apt autoremove
+        sudo apt clean
         # Install libraries used by the cppyy test suite
         sudo apt install libeigen3-dev
         sudo apt install libboost-all-dev
@@ -357,20 +354,23 @@ jobs:
         cd llvm-project
         # Build
         mkdir build
-        if [[ "${cling_on}" == "ON" ]]; then
+         if [[ "${cling_on}" == "ON" ]]; then
           cd build
-          cmake -DLLVM_ENABLE_PROJECTS=clang                  \
-                -DLLVM_EXTERNAL_PROJECTS=cling                \
-                -DLLVM_EXTERNAL_CLING_SOURCE_DIR=../../cling  \
-                -DLLVM_TARGETS_TO_BUILD="host;NVPTX"          \
-                -DCMAKE_BUILD_TYPE=Release                    \
-                -DLLVM_ENABLE_ASSERTIONS=ON                   \
-                -DLLVM_ENABLE_LLD=ON                          \
-                -DCLANG_ENABLE_STATIC_ANALYZER=OFF            \
-                -DCLANG_ENABLE_ARCMT=OFF                      \
-                -DCLANG_ENABLE_FORMAT=OFF                     \
-                -DCLANG_ENABLE_BOOTSTRAP=OFF                  \
+          cmake -DLLVM_ENABLE_PROJECTS="clang;lld"               \
+                -DLLVM_EXTERNAL_PROJECTS=cling                     \
+                -DLLVM_EXTERNAL_CLING_SOURCE_DIR=../../cling       \
+                -DLLVM_TARGETS_TO_BUILD="WebAssembly;host;NVPTX"   \
+                -DCMAKE_BUILD_TYPE=Release                         \
+                -DLLVM_ENABLE_ASSERTIONS=ON                        \
+                -DCLANG_ENABLE_STATIC_ANALYZER=OFF                 \
+                -DCLANG_ENABLE_ARCMT=OFF                           \
+                -DCLANG_ENABLE_FORMAT=OFF                          \
+                -DCLANG_ENABLE_BOOTSTRAP=OFF                       \
+                -DLLVM_ENABLE_ZSTD=OFF                             \
+                -DLLVM_ENABLE_TERMINFO=OFF                         \
+                -DLLVM_ENABLE_LIBXML2=OFF                          \
                 ../llvm
+          cmake --build . --target lld --parallel ${{ env.ncpus }}
           cmake --build . --target clang --parallel ${{ env.ncpus }}
           cmake --build . --target cling --parallel ${{ env.ncpus }}
           # Now build gtest.a and gtest_main for CppInterOp to run its tests.
@@ -378,22 +378,24 @@ jobs:
         else
           # Apply patches
           llvm_vers=$(echo "${{ matrix.clang-runtime }}" | tr '[:lower:]' '[:upper:]')
-          if [[ "${llvm_vers}" == "16" ]]||[[ "${llvm_vers}" == "17" ]];  then
+          if [[ "${llvm_vers}" == "16" ]]||[[ "${llvm_vers}" == "17" ]]; then
             git apply -v ../cppyy/patches/llvm/clang${{ matrix.clang-runtime }}-*.patch
             echo "Apply clang${{ matrix.clang-runtime }}-*.patch patches:"
           fi
           cd build
-          cmake -DLLVM_ENABLE_PROJECTS=clang                  \
-                -DLLVM_TARGETS_TO_BUILD="host;NVPTX"          \
-                -DCMAKE_BUILD_TYPE=Release                    \
-                -DLLVM_ENABLE_ASSERTIONS=ON                   \
-                -DLLVM_ENABLE_LLD=ON                          \
-                -DCLANG_ENABLE_STATIC_ANALYZER=OFF            \
-                -DCLANG_ENABLE_ARCMT=OFF                      \
-                -DCLANG_ENABLE_FORMAT=OFF                     \
-                -DCLANG_ENABLE_BOOTSTRAP=OFF                  \
+          cmake -DLLVM_ENABLE_PROJECTS="clang;lld"                  \
+                -DLLVM_TARGETS_TO_BUILD="WebAssembly;host;NVPTX"    \
+                -DCMAKE_BUILD_TYPE=Release                          \
+                -DLLVM_ENABLE_ASSERTIONS=ON                         \
+                -DCLANG_ENABLE_STATIC_ANALYZER=OFF                  \
+                -DCLANG_ENABLE_ARCMT=OFF                            \
+                -DCLANG_ENABLE_FORMAT=OFF                           \
+                -DCLANG_ENABLE_BOOTSTRAP=OFF                        \
+                -DLLVM_ENABLE_ZSTD=OFF                              \
+                -DLLVM_ENABLE_TERMINFO=OFF                          \
+                -DLLVM_ENABLE_LIBXML2=OFF                           \
                 ../llvm
-          cmake --build . --target clang clang-repl --parallel ${{ env.ncpus }}
+          cmake --build . --target clang clang-repl lld --parallel ${{ env.ncpus }}
         fi
         cd ../
         rm -rf $(find . -maxdepth 1 ! -name "build" ! -name "llvm" ! -name "clang" ! -name ".")
@@ -539,10 +541,12 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}    \
                 -DUSE_CLING=OFF                             \
                 -DUSE_REPL=ON                               \
-                -DLLVM_DIR=$LLVM_BUILD_DIR/lib/cmake/llvm       \
-                -DClang_DIR=$LLVM_BUILD_DIR/lib/cmake/clang     \
+                -DLLVM_DIR=$LLVM_BUILD_DIR/lib/cmake/llvm   \
+                -DClang_DIR=$LLVM_BUILD_DIR/lib/cmake/clang \
                 -DBUILD_SHARED_LIBS=ON                      \
+                -DCODE_COVERAGE=${{ env.CODE_COVERAGE }}    \
                 -DCMAKE_INSTALL_PREFIX=$CPPINTEROP_DIR      \
+                -DLLVM_ENABLE_WERROR=On                     \
                 -DCPPINTEROP_ENABLE_TESTING=OFF                 \
                 ../
         fi
@@ -725,7 +729,6 @@ jobs:
 
         # Run the rest of the non-crashing tests.
         declare -i RETCODE=0
-
         set -o pipefail
         if [[ "${{ matrix.os }}" == macos-* ]]; then
             echo "Skipping Valgrind checks on OS X"
@@ -737,9 +740,7 @@ jobs:
         fi
         export RETCODE=+$?
         echo ::endgroup::
-
         RETCODE=+$?
-
         echo "Complete Test Suite Summary: \n"
         tail -n1 complete_testrun.log
         echo "Crashing Summary: \n"
@@ -748,7 +749,7 @@ jobs:
         tail -n1 test_xfailed.log
         echo "Return Code: ${RETCODE}"
         exit $RETCODE
-
+        
     - name: Show debug info
       if: ${{ failure() && (runner.os != 'windows') }}
       run: |
