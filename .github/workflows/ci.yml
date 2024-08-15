@@ -535,7 +535,6 @@ jobs:
                 -DClang_DIR=$LLVM_BUILD_DIR/lib/cmake/clang     \
                 -DBUILD_SHARED_LIBS=ON                          \
                 -DCMAKE_INSTALL_PREFIX=$CPPINTEROP_DIR          \
-                -DCPPINTEROP_ENABLE_TESTING=OFF                 \
                 ../
         else
           cmake -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}    \
@@ -547,7 +546,6 @@ jobs:
                 -DCODE_COVERAGE=${{ env.CODE_COVERAGE }}    \
                 -DCMAKE_INSTALL_PREFIX=$CPPINTEROP_DIR      \
                 -DLLVM_ENABLE_WERROR=On                     \
-                -DCPPINTEROP_ENABLE_TESTING=OFF                 \
                 ../
         fi
         os="${{ matrix.os }}"
