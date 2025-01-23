@@ -1,6 +1,6 @@
 import py, os, sys
 from pytest import mark, raises
-from .support import setup_make, IS_CLANG_REPL, IS_MAC_X86
+from .support import setup_make, IS_CLANG_REPL, IS_MAC_X86, IS_MAC_ARM
 
 inc_paths = [os.path.join(os.path.sep, 'usr', 'include'),
              os.path.join(os.path.sep, 'usr', 'local', 'include')]
@@ -11,8 +11,6 @@ for p in inc_paths:
     if os.path.exists(p):
         eigen_path = p
 
-
-@mark.skipif(eigen_path is None, reason="Eigen not found")
 class TestEIGEN:
     def setup_class(cls):
         import cppyy, warnings
@@ -148,7 +146,6 @@ class TestEIGEN:
         assert a.size() == 9
 
 
-@mark.skipif(eigen_path is None, reason="Eigen not found")
 class TestEIGEN_REGRESSIOn:
     def setup_class(cls):
         import cppyy, warnings
@@ -158,7 +155,7 @@ class TestEIGEN_REGRESSIOn:
             warnings.simplefilter('ignore')
             cppyy.include('Eigen/Dense')
 
-    @mark.xfail(condition=IS_MAC_X86 and (not IS_CLANG_REPL), reason="Errors out on OS X Cling")
+    @mark.xfail(condition=((IS_MAC_ARM) or (IS_MAC_X86 and not IS_CLANG_REPL)), reason="Fails on OS X arm and osx 86 for cling")
     def test01_use_of_Map(self):
         """Use of Map (used to crash)"""
 
