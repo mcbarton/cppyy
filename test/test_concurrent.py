@@ -1,6 +1,6 @@
 import py, os, sys
 from pytest import raises, skip, mark
-from .support import IS_MAC_ARM, IS_MAC_X86
+from .support import IS_MAC_ARM, IS_MAC_X86, IS_LINUX_ARM
 
 
 class TestCONCURRENT:
@@ -166,6 +166,7 @@ class TestCONCURRENT:
         assert "RuntimeError" in w.err_msg
         assert "all wrong"    in w.err_msg
 
+    @mark.xfail(run=False, condition=IS_LINUX_ARM, reason="Crashes pytest on Linux ARM")
     def test05_float2d_callback(self):
         """Passing of 2-dim float arguments"""
 
