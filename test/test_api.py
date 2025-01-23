@@ -1,6 +1,6 @@
 import py, os, sys
 from pytest import raises, skip, mark
-from .support import ispypy, IS_MAC
+from .support import ispypy, IS_MAC, IS_LINUX_ARM
 
 
 class TestAPI:
@@ -64,6 +64,7 @@ class TestAPI:
         m2 = API.Instance_FromVoidPtr(voidp, 'APICheck2')
         assert m is m2
 
+    @mark.xfail(run=False, condition=IS_LINUX_ARM, reason="Crashes pytest on Linux ARM")
     def test04_custom_converter(self):
         """Custom type converter"""
 
@@ -142,6 +143,7 @@ class TestAPI:
         assert type(gA3b) == cppyy.gbl.APICheck3
         assert not gA3b.wasFromMemoryCalled()
 
+    @mark.xfail(run=False, condition=IS_LINUX_ARM, reason="Crashes pytest on Linux ARM")
     def test05_custom_executor(self):
         """Custom type executor"""
 

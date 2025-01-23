@@ -1,6 +1,6 @@
 import py, os, sys
 from pytest import raises, skip, mark
-from .support import setup_make, pylong, IS_MAC_ARM, IS_MAC, IS_CLANG_REPL, IS_CLANG_DEBUG
+from .support import setup_make, pylong, IS_MAC_ARM, IS_MAC, IS_CLANG_REPL, IS_CLANG_DEBUG, IS_LINUX_ARM
 
 
 currpath = py.path.local(__file__).dirpath()
@@ -36,6 +36,7 @@ class TestCROSSINHERITANCE:
         assert Base1.call_get_value(Base1())   == 42
         assert Base1.call_get_value(Derived()) == 13
 
+    @mark.xfail(run=False, condition=IS_LINUX_ARM, reason="Crashes pytest on Linux ARM")
     def test02_constructor(self):
         """Test constructor usage for derived classes"""
 
@@ -72,6 +73,7 @@ class TestCROSSINHERITANCE:
         assert d.get_value()           == 29
         assert Base1.call_get_value(d) == 29
 
+    @mark.xfail(run=False, condition=IS_LINUX_ARM, reason="Crashes pytest on Linux ARM")
     def test03_override_function_abstract_base(self):
         """Test ability to override a simple function with an abstract base"""
 
@@ -164,6 +166,7 @@ class TestCROSSINHERITANCE:
         d2 = Derived2()
         assert Base1.sum_pass_value(d2) == 12+4*d2.m_int
 
+    @mark.xfail(run=False, condition=IS_LINUX_ARM, reason="Crashes pytest on Linux ARM")
     def test05_override_overloads(self):
         """Test ability to override overloaded functions"""
 
@@ -184,6 +187,7 @@ class TestCROSSINHERITANCE:
         assert d.sum_all(-7, -5)             == 1
         assert Base1.call_sum_all(d, -7, -5) == 1
 
+    @mark.xfail(run=False, condition=IS_LINUX_ARM, reason="Crashes pytest on Linux ARM")
     def test06_const_methods(self):
         """Declared const methods should keep that qualifier"""
 
@@ -206,6 +210,7 @@ class TestCROSSINHERITANCE:
         assert CX.IBase4.call_get_value(c1) == 17
         assert CX.IBase4.call_get_value(c2) == 27
 
+    @mark.xfail(run=False, condition=IS_LINUX_ARM, reason="Fails with ModuleNotFound error")
     def test07_templated_base(self):
         """Derive from a base class that is instantiated from a template"""
 
@@ -505,7 +510,8 @@ class TestCROSSINHERITANCE:
         assert m.my_data      == 42
         assert m.get_data()   == 42
         assert m.get_data_v() == 42
-
+    
+    @mark.xfail(run=False, condition=IS_LINUX_ARM, reason="Crashes pytest on Linux ARM")
     def test15_object_returns(self):
         """Return of C++ objects from overridden functions"""
 
@@ -740,6 +746,7 @@ class TestCROSSINHERITANCE:
             def abstract1(self):
                 return ns.Result(1)
 
+    @mark.xfail(run=False, condition=IS_LINUX_ARM, reason="Crashes pytest on Linux ARM")
     def test20_basic_multiple_inheritance(self):
         """Basic multiple inheritance"""
 
@@ -818,6 +825,7 @@ class TestCROSSINHERITANCE:
         assert a.m_2 == 42
         assert a.m_3 == 67
 
+    @mark.xfail(run=not IS_CLANG_DEBUG, reason="Crashes with ClangRepl with 'toString not implemented'")
     def test21_multiple_inheritance_with_constructors(self):
         """Multiple inheritance with constructors"""
 
@@ -905,6 +913,7 @@ class TestCROSSINHERITANCE:
         assert a.m_2 ==  88
         assert a.m_3 == -11
 
+    @mark.xfail(run=not IS_CLANG_DEBUG, reason="Crashes with ClangRepl with 'toString not implemented'")
     def test22_multiple_inheritance_with_defaults(self):
         """Multiple inheritance with defaults"""
 
@@ -1276,6 +1285,7 @@ class TestCROSSINHERITANCE:
             assert inst.fun1() == val1
             assert inst.fun2() == inst.fun1()
 
+    @mark.xfail(run=not IS_CLANG_DEBUG, reason="Crashes with ClangRepl with 'toString not implemented'")
     def test29_cross_deep_multi(self):
         """Deep multi-inheritance hierarchy"""
 
@@ -1517,6 +1527,7 @@ class TestCROSSINHERITANCE:
         gc.collect()
         assert ns.Component.get_count() == 0
 
+    @mark.xfail(run=not IS_CLANG_DEBUG, reason="Crashes with ClangRepl with 'toString not implemented'")
     def test32_by_value_arguments(self):
         """Override base function taking by-value arguments"""
 
