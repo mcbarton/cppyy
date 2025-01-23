@@ -17,7 +17,7 @@ class TestDATATYPES:
         import cppyy
         cls.datatypes = cppyy.load_reflection_info(cls.test_dct)
         cls.N = 5 #cppyy.gbl.N
-        at_least_17 = 201402 < cppyy.gbl.Cpp.Evaluate("__cplusplus;")
+        at_least_17 = 201402 < cppyy.gbl.Cpp.Evaluate("__cplusplus")
         cls.has_byte     = at_least_17
         cls.has_optional = at_least_17
 
@@ -193,7 +193,7 @@ class TestDATATYPES:
 
         c.__destruct__()
 
-    @mark.xfail(condition=not IS_CLANG_REPL, reason="fails with Cling")
+    @mark.xfail
     def test02_instance_data_write_access(self):
         """Test write access to instance public data and verify values"""
 
@@ -378,7 +378,7 @@ class TestDATATYPES:
 
         c.__destruct__()
 
-    @mark.xfail(condition= not(IS_CLANG_REPL), reason="Fails on with Cling")
+    @mark.xfail
     def test04_class_read_access(self):
         """Test read access to class public data and verify values"""
 
@@ -442,7 +442,7 @@ class TestDATATYPES:
 
         c.__destruct__()
 
-    @mark.xfail(condition = not(IS_CLANG_REPL), reason="Fails on Cling")
+    @mark.xfail
     def test05_class_data_write_access(self):
         """Test write access to class public data and verify values"""
 

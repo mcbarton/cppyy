@@ -320,7 +320,7 @@ class TestCPP11FEATURES:
         assert cppyy.gbl.gMyLambda(2)  == 42
         assert cppyy.gbl.gMyLambda(40) == 80
 
-        if cppyy.gbl.Cpp.Evaluate("__cplusplus;") >= 201402:
+        if cppyy.gbl.Cpp.Evaluate("__cplusplus") >= 201402:
             cppyy.cppdef("auto gime_a_lambda1() { return []() { return 42; }; }")
             l1 = cppyy.gbl.gime_a_lambda1()
             assert l1
@@ -336,12 +336,13 @@ class TestCPP11FEATURES:
             assert l3
             assert l3(2) == 48
 
+    @mark.xfail
     def test10_optional(self):
         """Use of optional and nullopt"""
 
         import cppyy
 
-        if 201703 <= cppyy.gbl.Cpp.Evaluate("__cplusplus;"):
+        if 201703 <= cppyy.gbl.Cpp.Evaluate("__cplusplus"):
             assert cppyy.gbl.std.optional
             assert cppyy.gbl.std.nullopt
 

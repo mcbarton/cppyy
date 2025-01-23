@@ -1015,7 +1015,7 @@ class TestREGRESSION:
         v = cppyy.gbl.std.vector[int]()
         str(v)
 
-    @mark.skipif(not IS_CLANG_REPL, reason="Crashes on Cling")
+    @mark.xfail(run=IS_CLANG_REPL, reason="Crashes on Cling")
     def test35_filesytem(self):
         """Static path object used to crash on destruction"""
 
@@ -1025,7 +1025,7 @@ class TestREGRESSION:
 
         import cppyy
 
-        if cppyy.gbl.Cpp.Evaluate("__cplusplus;") > 201402:
+        if cppyy.gbl.Cpp.Evaluate("__cplusplus") > 201402:
             cppyy.cppdef("""\
             #include <filesystem>
             std::string stack_std_path() {
