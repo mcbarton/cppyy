@@ -484,7 +484,7 @@ class TestLOWLEVEL:
         assert cppyy.gbl.std.vector[cppyy.gbl.std.vector[int]].value_type == 'std::vector<int>'
         assert cppyy.gbl.std.vector['int[1]'].value_type == 'int[1]'
 
-    @mark.skip
+    @mark.xfail(run=not (IS_MAC_X86 and not IS_CLANG_REPL), reason="Crashes on OSX-X86 Cling")
     def test15_templated_arrays_gmpxx(self):
         """Use of gmpxx array types in templates"""
 
