@@ -1,11 +1,15 @@
 import py, os, sys
+import cppyy
 from pytest import mark, raises, skip
 from .support import setup_make, IS_CLANG_REPL, IS_MAC_X86, IS_MAC_ARM
 
-noboost = False
-if not (os.path.exists(os.path.join(os.path.sep, 'usr', 'include', 'boost')) or \
-        os.path.exists(os.path.join(os.path.sep, 'usr', 'local', 'include', 'boost'))):
-    noboost = True
+noboost = not cppyy.gbl.Cpp.Evaluate("""
+    #if __has_include("boost/any.hpp")
+        true
+    #else
+        false
+    #endif
+""")
 
 class TestBOOSTANY:
     def setup_class(cls):
