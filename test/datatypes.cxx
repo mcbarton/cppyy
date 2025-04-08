@@ -13,8 +13,8 @@ CppyyTestData::CppyyTestData() : m_const_int(17), m_owns_arrays(false)
     m_schar    = 'b';
     m_uchar    = 'c';
     m_wchar    = L'D';
-    m_char16   = u'\u00df';
-    m_char32   = U'\u00df';
+    m_char16   = '\u00df';
+    m_char32   = '\u00df';
 #if __cplusplus > 201402L
     m_byte     = (std::byte)'d';
 #endif
@@ -336,8 +336,8 @@ void CppyyTestData::set_enum_cr(const EWhat& w)                  { m_enum     = 
 void CppyyTestData::set_bool_r(bool& b)                   { b = true; }
 void CppyyTestData::set_char_r(char& c)                   { c = 'a'; }
 void CppyyTestData::set_wchar_r(wchar_t& wc)              { wc = 'b'; }
-void CppyyTestData::set_char16_r(char16_t& c16)           { c16 = u'\u6c24'; }
-void CppyyTestData::set_char32_r(char32_t& c32)           { c32 = U'\U0001f34e'; }
+void CppyyTestData::set_char16_r(char16_t& c16)           { c16 = '\u6c24'; }
+void CppyyTestData::set_char32_r(char32_t& c32)           { c32 = '\U0001f34e'; }
 void CppyyTestData::set_schar_r(signed char& sc)          { sc = 'c'; }
 void CppyyTestData::set_uchar_r(unsigned char& uc)        { uc = 'd'; }
 #if __cplusplus > 201402L
@@ -359,8 +359,8 @@ void CppyyTestData::set_ldouble_r(long double& ld)        { ld = 10.l; }
 void CppyyTestData::set_bool_p(bool* b)                   { *b = true; }
 void CppyyTestData::set_char_p(char* c)                   { *c = 'a'; }
 void CppyyTestData::set_wchar_p(wchar_t* wc)              { *wc = 'b'; }
-void CppyyTestData::set_char16_p(char16_t* c16)           { *c16 = u'\u6c24'; }
-void CppyyTestData::set_char32_p(char32_t* c32)           { *c32 = U'\U0001f34e'; }
+void CppyyTestData::set_char16_p(char16_t* c16)           { *c16 = '\u6c24'; }
+void CppyyTestData::set_char32_p(char32_t* c32)           { *c32 = '\U0001f34e'; }
 void CppyyTestData::set_schar_p(signed char* sc)          { *sc = 'c'; }
 void CppyyTestData::set_uchar_p(unsigned char* uc)        { *uc = 'd'; }
 #if __cplusplus > 201402L
@@ -393,11 +393,11 @@ void CppyyTestData::set_wchar_ppa(wchar_t** wc) {
 }
 void CppyyTestData::set_char16_ppa(char16_t** c16) {
     (*c16) = new char16_t[3];
-    (*c16)[0] = u'\u6c24'; (*c16)[1] = u'\u6c25'; (*c16)[2] = u'\u6c26';
+    (*c16)[0] = '\u6c24'; (*c16)[1] = '\u6c25'; (*c16)[2] = '\u6c26';
 }
 void CppyyTestData::set_char32_ppa(char32_t** c32) {
     (*c32) = new char32_t[3];
-    (*c32)[0] = U'\U0001f34d'; (*c32)[1] = U'\U0001f34e'; (*c32)[2] = U'\U0001f34f';
+    (*c32)[0] = '\U0001f34d'; (*c32)[1] = '\U0001f34e'; (*c32)[2] = '\U0001f34f';
 }
 void CppyyTestData::set_schar_ppa(signed char** sc) {
     (*sc) = new signed char[3];
@@ -551,8 +551,8 @@ char                 CppyyTestData::s_char     = 'c';
 signed char          CppyyTestData::s_schar    = 's';
 unsigned char        CppyyTestData::s_uchar    = 'u';
 wchar_t              CppyyTestData::s_wchar    = L'U';
-char16_t             CppyyTestData::s_char16   = u'\u6c29';
-char32_t             CppyyTestData::s_char32   = U'\U0001f34b';
+char16_t             CppyyTestData::s_char16   = '\u6c29';
+char32_t             CppyyTestData::s_char32   = '\U0001f34b';
 #if __cplusplus > 201402L
 std::byte            CppyyTestData::s_byte     = (std::byte)'b';
 #endif
@@ -613,8 +613,8 @@ char               g_char     = 'w';
 signed char        g_schar    = 'v';
 unsigned char      g_uchar    = 'u';
 wchar_t            g_wchar    = L'U';
-char16_t           g_char16   = u'\u6c21';
-char32_t           g_char32   = U'\u6c21';
+char16_t           g_char16   = '\u6c21';
+char32_t           g_char32   = '\u6c21';
 #if __cplusplus > 201402L
 std::byte          g_byte     = (std::byte)'x';
 #endif
@@ -672,8 +672,8 @@ std::string get_some_global_string() { return g_some_global_string; }
 std::string g_some_global_string2 = "C++";
 std::string get_some_global_string2() { return g_some_global_string2; }
 
-const char16_t* g_some_global_string16 = u"z\u00df\u6c34";
-const char32_t* g_some_global_string32 = U"z\u00df\u6c34\U0001f34c";
+const char16_t* g_some_global_string16 = "z\u00df\u6c34";
+const char32_t* g_some_global_string32 = "z\u00df\u6c34\U0001f34c";
 
 std::string SomeStaticDataNS::s_some_static_string = "C++";
 std::string SomeStaticDataNS::get_some_static_string() { return s_some_static_string; }
