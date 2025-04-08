@@ -608,8 +608,8 @@ static const char               g_c_char    = 'z';
 static const signed char        g_c_schar   = 'y';
 static const unsigned char      g_c_uchar   = 'x';
 static const wchar_t            g_c_wchar   = L'U';
-static const char16_t           g_c_char16  = '\u6c34';
-static const char32_t           g_c_char32  = '\U0001f34c';
+static const char16_t           g_c_char16  = str('\u6c34', 'utf-16') ;
+static const char32_t           g_c_char32  = str('\U0001f34c', 'utf-32');
 #if __cplusplus > 201402L
 static const std::byte          g_c_byte    = (std::byte)'u';
 #endif
