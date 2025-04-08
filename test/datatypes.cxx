@@ -613,8 +613,8 @@ char               g_char     = 'w';
 signed char        g_schar    = 'v';
 unsigned char      g_uchar    = 'u';
 wchar_t            g_wchar    = L'U';
-char16_t           g_char16   = '\u6c21';
-char32_t           g_char32   = '\u6c21';
+char16_t           g_char16   = u'\u6c21';
+char32_t           g_char32   = U'\u6c21';
 #if __cplusplus > 201402L
 std::byte          g_byte     = (std::byte)'x';
 #endif
@@ -672,8 +672,8 @@ std::string get_some_global_string() { return g_some_global_string; }
 std::string g_some_global_string2 = "C++";
 std::string get_some_global_string2() { return g_some_global_string2; }
 
-const char16_t* g_some_global_string16 = "z\u00df\u6c34";
-const char32_t* g_some_global_string32 = "z\u00df\u6c34\U0001f34c";
+const char16_t* g_some_global_string16 = u"z\u00df\u6c34";
+const char32_t* g_some_global_string32 = U"z\u00df\u6c34\U0001f34c";
 
 std::string SomeStaticDataNS::s_some_static_string = "C++";
 std::string SomeStaticDataNS::get_some_static_string() { return s_some_static_string; }
