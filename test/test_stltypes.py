@@ -531,7 +531,7 @@ class TestSTLVECTOR:
         for val in l:
             assert hasattr(val, '__lifeline')
 
-    @mark.xfail
+    @mark.xfail(condition=IS_MAC and IS_CLING, reason="Fails on OSX-Cling")
     def test13_vector_smartptr_iteration(self):
         """Iteration over smart pointers"""
 
@@ -565,7 +565,7 @@ class TestSTLVECTOR:
             i += 1
         assert i == len(result)
 
-    @mark.xfail(run=not(IS_MAC and IS_CLING), condition=(IS_MAC and IS_CLING) or IS_MAC_X86, reason="Fails on OSX-Cling and OSX-X86 with clang-repl")
+    @mark.xfail(run=not(IS_MAC and IS_CLING), condition=(IS_MAC and IS_CLING), reason="Fails on OSX-Cling")
     def test14_vector_of_vector_of_(self):
         """Nested vectors"""
 
@@ -1452,7 +1452,6 @@ class TestSTLITERATOR:
         assert next(it).value == 1
         assert next(it).value == 2
 
-    @mark.xfail
     def test04_stllike_confusing_name(self):
         """Having "iterator" in the container name used to fail"""
 
@@ -1599,7 +1598,7 @@ class TestSTLSTRING_VIEW:
         import cppyy
         cls.stltypes = cppyy.load_reflection_info(cls.test_dct)
 
-    @mark.xfail
+    @mark.xfail(condition=IS_MAC, reason="Fails on OSX")
     def test01_string_through_string_view(self):
         """Usage of std::string_view as formal argument"""
 
